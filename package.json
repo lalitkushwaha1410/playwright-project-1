@@ -1,0 +1,29 @@
+{
+  "name": "workflow-automation-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitlab.cha.rbxd.ds/icis/workflow/automation-test-suite/workflow-automation-tests.git",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.48.1",
+    "@types/node": "^22.5.4",
+    "allure-playwright": "^2.9.2",
+    "cross-env": "^7.0.3",
+    "playwright": "^1.48.1"
+  },
+  "scripts": {
+    "debug": "npx playwright test --headed --debug",
+    "test:tc": "yarn cross-env BROWSER=chromium ENV_NAME=staging npx playwright test -g component_tasklist.spec.ts --browser=chromium --headed",
+    "test:perf": "yarn cross-env BROWSER=chromium ENV_NAME=staging npx playwright test -g performance_tasklist.spec.ts --browser=chromium --headed",
+    "generateAllure": "allure generate allure-results -o allure-report --clean",
+    "systest": "cross-env ENV_NAME=systest npx playwright test --headed",
+    "staging": "cross-env ENV_NAME=staging npx playwright test --headed",
+    "parallel-run": "cross-env npx playwright test --headed --workers 3",
+    "allure:open": "allure open allure-report",
+    "test:report": "yarn test:tc && generateAllure",
+    "allure:clean": "allure clean allure-report",
+    "test:comp": "yarn playwright test $CLASSNAME --list && yarn playwright test --reporter=html,list,./reporter.ts $CLASSNAME cross-env ENV_NAME=$ENV --browser=$BROWSER --grep=$TAGS",
+    "test:performance": "yarn playwright test $CLASSNAME --list && yarn playwright test --reporter=html,list,./reporter.ts $CLASSNAME cross-env ENV_NAME=$ENV --browser=$BROWSER --grep=$TAGS"
+  }
+}
